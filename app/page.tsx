@@ -13,7 +13,7 @@ export default function Home() {
   const [formType, setFormType] = useState<FormType>(null);
 
   // Form state (basic example)
-  const [formData, setFormData] = useState<any>({});
+const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
