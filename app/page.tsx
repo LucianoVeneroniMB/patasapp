@@ -114,7 +114,7 @@ export default function Home() {
             {/* Common fields */}
             <div>
               <label htmlFor="name" className="block font-medium">
-                Nombre
+                Tu Nombre
               </label>
               <input
                 id="name"
@@ -128,7 +128,7 @@ export default function Home() {
 
             <div>
               <label htmlFor="edad" className="block font-medium">
-                Edad
+                Edad de la mascota
               </label>
               <input
                 id="edad"
