@@ -23,7 +23,9 @@ export default function Home() {
   const [formType, setFormType] = useState<FormType>(null);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+  function handleInputChange(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
@@ -125,6 +127,19 @@ export default function Home() {
             </div>
 
             <div>
+              <label htmlFor="edad" className="block font-medium">
+                Edad
+              </label>
+              <input
+                id="edad"
+                name="edad"
+                type="text"
+                className="w-full p-2 border rounded"
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
               <label htmlFor="photo" className="block font-medium">
                 Foto
               </label>
@@ -137,8 +152,10 @@ export default function Home() {
               />
             </div>
 
-            {/* Extra fields for specific forms */}
-            {(formType === "findMyPet" || formType === "foundPet") && (
+            {(formType === "findMyPet" ||
+              formType === "foundPet" ||
+              formType === "wantToAdopt" ||
+              formType === "giveForAdoption") && (
               <>
                 <div>
                   <label htmlFor="nombreMascota" className="block font-medium">
@@ -239,23 +256,27 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
+              </>
+            )}
 
-                <div>
-                  <label htmlFor="fecha" className="block font-medium">
-                    {formType === "findMyPet"
-                      ? "Fecha que se perdió"
-                      : "Fecha que se encontró"}
-                  </label>
-                  <input
-                    id="fecha"
-                    name="fecha"
-                    type="date"
-                    className="w-full p-2 border rounded"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                
-                      <div>
+            {(formType === "findMyPet" || formType === "foundPet") && (
+              <div>
+                <label htmlFor="fecha" className="block font-medium">
+                  {formType === "findMyPet"
+                    ? "Fecha que se perdió"
+                    : "Fecha que se encontró"}
+                </label>
+                <input
+                  id="fecha"
+                  name="fecha"
+                  type="date"
+                  className="w-full p-2 border rounded"
+                  onChange={handleInputChange}
+                />
+              </div>
+            )}
+
+            <div>
               <label htmlFor="description" className="block font-medium">
                 Notas
               </label>
@@ -267,8 +288,6 @@ export default function Home() {
                 required
               />
             </div>
-              </>
-            )}
 
             <button
               type="submit"
