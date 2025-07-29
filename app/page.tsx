@@ -3,7 +3,14 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import Script from "next/script";
 
-declare const grecaptcha: unknown;
+interface GrecaptchaEnterprise {
+  enterprise: {
+    ready: (callback: () => void) => void;
+    execute: (siteKey: string, options: { action: string }) => Promise<string>;
+  };
+}
+
+declare const grecaptcha: GrecaptchaEnterprise | undefined;
 
 type FormType =
   | "findMyPet"
@@ -15,7 +22,6 @@ type FormType =
 export default function Home() {
   const [formType, setFormType] = useState<FormType>(null);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,7 +34,7 @@ export default function Home() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    if (typeof grecaptcha === "undefined") {
+    if (!grecaptcha) {
       alert("No se pudo cargar reCAPTCHA. Intenta nuevamente.");
       return;
     }
@@ -36,13 +42,11 @@ export default function Home() {
     grecaptcha.enterprise.ready(async () => {
       try {
         const token = await grecaptcha.enterprise.execute(
-          "6LfNmpMrAAAAAHJjT35Fh69t4L6EOM5vBiWI3YME", // Your site key
+          "6LfNmpMrAAAAAHJjT35Fh69t4L6EOM5vBiWI3YME",
           { action: "LOGIN" }
         );
 
-        setRecaptchaToken(token);
-
-        // Aquí puedes enviar el token al backend para validarlo junto con formData
+        // Use token immediately — e.g., send it to backend with formData
         console.log("reCAPTCHA token:", token);
         console.log("Datos del formulario:", formData);
 
@@ -100,7 +104,6 @@ export default function Home() {
               onClick={() => {
                 setFormType(null);
                 setFormData({});
-                setRecaptchaToken(null);
               }}
               className="text-gray-500 underline"
             >
