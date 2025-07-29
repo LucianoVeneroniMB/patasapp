@@ -125,19 +125,6 @@ export default function Home() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block font-medium">
-                Notas
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                className="w-full p-2 border rounded"
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            <div>
               <label htmlFor="photo" className="block font-medium">
                 Foto
               </label>
@@ -267,6 +254,19 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
+                
+                      <div>
+              <label htmlFor="description" className="block font-medium">
+                Notas
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                className="w-full p-2 border rounded"
+                onChange={handleInputChange}
+                required
+              />
+            </div>
               </>
             )}
 
