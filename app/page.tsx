@@ -181,7 +181,6 @@ export default function Home() {
 
             {(formType === "findMyPet" ||
               formType === "foundPet" ||
-              formType === "wantToAdopt" ||
               formType === "giveForAdoption") && (
               <>
                 <div>
