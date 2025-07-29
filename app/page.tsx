@@ -126,6 +126,33 @@ export default function Home() {
               />
             </div>
 
+                <div>
+                  <label htmlFor="email" className="block font-medium">
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="telefono" className="block font-medium">
+                    Teléfono
+                  </label>
+                  <input
+                    id="telefono"
+                    name="telefono"
+                    type="tel"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
             <div>
               <label htmlFor="edad" className="block font-medium">
                 Edad de la mascota
@@ -165,33 +192,6 @@ export default function Home() {
                     id="nombreMascota"
                     name="nombreMascota"
                     type="text"
-                    className="w-full p-2 border rounded"
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block font-medium">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    className="w-full p-2 border rounded"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="telefono" className="block font-medium">
-                    Teléfono
-                  </label>
-                  <input
-                    id="telefono"
-                    name="telefono"
-                    type="tel"
                     className="w-full p-2 border rounded"
                     onChange={handleInputChange}
                   />
