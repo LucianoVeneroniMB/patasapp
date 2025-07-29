@@ -23,7 +23,7 @@ export default function Home() {
   const [formType, setFormType] = useState<FormType>(null);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
-  function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
@@ -46,7 +46,6 @@ export default function Home() {
           { action: "LOGIN" }
         );
 
-        // Use token immediately — e.g., send it to backend with formData
         console.log("reCAPTCHA token:", token);
         console.log("Datos del formulario:", formData);
 
@@ -110,7 +109,7 @@ export default function Home() {
               ← Volver al menú
             </button>
 
-            {/* Example inputs */}
+            {/* Common fields */}
             <div>
               <label htmlFor="name" className="block font-medium">
                 Nombre
@@ -127,7 +126,7 @@ export default function Home() {
 
             <div>
               <label htmlFor="description" className="block font-medium">
-                Descripción
+                Notas
               </label>
               <textarea
                 id="description"
@@ -150,6 +149,126 @@ export default function Home() {
                 onChange={handleFileChange}
               />
             </div>
+
+            {/* Extra fields for specific forms */}
+            {(formType === "findMyPet" || formType === "foundPet") && (
+              <>
+                <div>
+                  <label htmlFor="nombreMascota" className="block font-medium">
+                    Nombre de la mascota
+                  </label>
+                  <input
+                    id="nombreMascota"
+                    name="nombreMascota"
+                    type="text"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block font-medium">
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="telefono" className="block font-medium">
+                    Teléfono
+                  </label>
+                  <input
+                    id="telefono"
+                    name="telefono"
+                    type="tel"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="raza" className="block font-medium">
+                    Raza
+                  </label>
+                  <input
+                    id="raza"
+                    name="raza"
+                    type="text"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="tipoMascota" className="block font-medium">
+                    Tipo de Mascota
+                  </label>
+                  <select
+                    id="tipoMascota"
+                    name="tipoMascota"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                    defaultValue=""
+                    required
+                  >
+                    <option value="" disabled>
+                      Selecciona una opción
+                    </option>
+                    <option value="Gato">Gato</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="peso" className="block font-medium">
+                    Peso Aproximado
+                  </label>
+                  <input
+                    id="peso"
+                    name="peso"
+                    type="text"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="color" className="block font-medium">
+                    Color
+                  </label>
+                  <input
+                    id="color"
+                    name="color"
+                    type="text"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="fecha" className="block font-medium">
+                    {formType === "findMyPet"
+                      ? "Fecha que se perdió"
+                      : "Fecha que se encontró"}
+                  </label>
+                  <input
+                    id="fecha"
+                    name="fecha"
+                    type="date"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </>
+            )}
 
             <button
               type="submit"
