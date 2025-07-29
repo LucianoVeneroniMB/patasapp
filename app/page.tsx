@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import Script from "next/script";
 
-declare const grecaptcha: any;
+declare const grecaptcha: unknown;
 
 type FormType =
   | "findMyPet"
