@@ -48,7 +48,7 @@ const gatoRazas = [
 
 export default function Home() {
   const [formType, setFormType] = useState<FormType>(null);
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   function handleInputChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -94,7 +94,11 @@ export default function Home() {
   return (
     <>
       <Script src="https://www.google.com/recaptcha/enterprise.js?render=6LfNmpMrAAAAAHJjT35Fh69t4L6EOM5vBiWI3YME" strategy="afterInteractive" />
-      {/* Main form UI is included separately in another response or can be pasted from prior answer */}
+      <main className="min-h-screen p-8 max-w-3xl mx-auto font-sans">
+        <h1 className="text-3xl font-bold mb-8 text-center">🐾 Pet Finder</h1>
+
+        {/* Aquí va el formulario dinámico, que puedes pegar desde la respuesta anterior completa */}
+      </main>
     </>
   );
 }
