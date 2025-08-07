@@ -309,6 +309,8 @@ export default function Home() {
                     </option>
                     <option value="Si">Si</option>
                     <option value="No">No</option>
+                    <option value="No sé">No</option>
+
                   </select>
                 </div>
               </>
