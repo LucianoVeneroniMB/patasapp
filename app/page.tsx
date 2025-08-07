@@ -34,66 +34,67 @@ export default function Home() {
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
   useEffect(() => {
-    if (
-      (formType === "findMyPet" || formType === "foundPet") &&
-      mapContainer.current
-    ) {
-      if (mapRef.current) return;
+  if (
+    (formType === "findMyPet" || formType === "foundPet") &&
+    mapContainer.current
+  ) {
+    if (mapRef.current) return;
 
-      // Default center to Buenos Aires
-      const defaultCenter: [number, number] = [-58.4173, -34.6118];
+    // Default center to Buenos Aires
+    const defaultCenter: [number, number] = [-58.4173, -34.6118];
 
-      mapRef.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v12",
-        center: defaultCenter,
-        zoom: 10,
-      });
+    mapRef.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: defaultCenter,
+      zoom: 10,
+    });
 
-      // Try to get user's current position and recenter map
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userLng = position.coords.longitude;
-            const userLat = position.coords.latitude;
-            mapRef.current?.setCenter([userLng, userLat]);
-            mapRef.current?.setZoom(13);
-          },
-          (error) => {
-            console.warn("Geolocation error:", error.message);
-            // fallback to default center
-          }
-        );
-      }
-
-      mapRef.current.on("click", (e) => {
-        const { lng, lat } = e.lngLat;
-
-        if (markerRef.current) {
-          markerRef.current.setLngLat([lng, lat]);
-        } else {
-          markerRef.current = new mapboxgl.Marker({ color: "red" })
-            .setLngLat([lng, lat])
-            .addTo(mapRef.current!);
+    // Try to get user's current position and recenter map
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLng = position.coords.longitude;
+          const userLat = position.coords.latitude;
+          mapRef.current?.setCenter([userLng, userLat]);
+          mapRef.current?.setZoom(13);
+        },
+        (error) => {
+          console.warn("Geolocation error:", error.message);
+          // fallback to default center
         }
-
-        setMarkerCoords([lng, lat]);
-        setFormData((prev) => ({
-          ...prev,
-          locationLng: lng,
-          locationLat: lat,
-        }));
-      });
+      );
     }
 
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-        markerRef.current = null;
+    // Handle map click to drop or move marker
+    mapRef.current.on("click", (e) => {
+      const { lng, lat } = e.lngLat;
+
+      if (markerRef.current) {
+        markerRef.current.setLngLat([lng, lat]);
+      } else {
+        markerRef.current = new mapboxgl.Marker({ color: "red" })
+          .setLngLat([lng, lat])
+          .addTo(mapRef.current!);
       }
-    };
-  }, [formType]);
+
+      setMarkerCoords([lng, lat]);
+      setFormData((prev) => ({
+        ...prev,
+        locationLng: lng,
+        locationLat: lat,
+      }));
+    });
+  }
+
+  return () => {
+    if (mapRef.current) {
+      mapRef.current.remove();
+      mapRef.current = null;
+      markerRef.current = null;
+    }
+  };
+}, [formType]);
 
   function handleInputChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
