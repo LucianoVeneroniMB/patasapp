@@ -408,7 +408,7 @@ export default function Home() {
                   <label className="block font-medium mb-1">
                     Selecciona ubicación en el mapa
                   </label>
-                  <div ref={mapContainer} className="w-full h-64 rounded border" />
+                  <div ref={mapContainer} className="map-container" />
                   {markerCoords && (
                     <p className="text-sm text-gray-500 mt-2">
                       Ubicación seleccionada: {markerCoords[1].toFixed(5)},{" "}
