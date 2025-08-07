@@ -35,7 +35,9 @@ export default function Home() {
 
   useEffect(() => {
   if (
-    (formType === "findMyPet" || formType === "foundPet") &&
+    (formType === "findMyPet" ||
+     formType === "foundPet" ||
+     formType === "giveForAdoption") &&
     mapContainer.current
   ) {
     if (mapRef.current) return;
