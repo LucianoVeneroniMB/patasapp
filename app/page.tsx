@@ -40,12 +40,31 @@ export default function Home() {
     ) {
       if (mapRef.current) return;
 
+      // Default center to Buenos Aires
+      const defaultCenter: [number, number] = [-58.4173, -34.6118];
+
       mapRef.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v12",
-        center: [-58.4173, -34.6118], // Default to Buenos Aires
+        center: defaultCenter,
         zoom: 10,
       });
+
+      // Try to get user's current position and recenter map
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLng = position.coords.longitude;
+            const userLat = position.coords.latitude;
+            mapRef.current?.setCenter([userLng, userLat]);
+            mapRef.current?.setZoom(13);
+          },
+          (error) => {
+            console.warn("Geolocation error:", error.message);
+            // fallback to default center
+          }
+        );
+      }
 
       mapRef.current.on("click", (e) => {
         const { lng, lat } = e.lngLat;
