@@ -1,8 +1,11 @@
-
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useEffect, useRef, useState, ChangeEvent, FormEvent } from "react";
+import mapboxgl from "mapbox-gl";
 import Script from "next/script";
+
+mapboxgl.accessToken =
+  "pk.eyJ1IjoibHVjaWFub3ZlbmVyb25pIiwiYSI6ImNtZTFxdGhyNTBpankycXExaXp5a3VxMnIifQ.ivImhOSUs6fvUC0XeTLMXg";
 
 interface GrecaptchaEnterprise {
   enterprise: {
@@ -23,6 +26,55 @@ type FormType =
 export default function Home() {
   const [formType, setFormType] = useState<FormType>(null);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
+  const [markerCoords, setMarkerCoords] = useState<[number, number] | null>(
+    null
+  );
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const markerRef = useRef<mapboxgl.Marker | null>(null);
+
+  useEffect(() => {
+    if (
+      (formType === "findMyPet" || formType === "foundPet") &&
+      mapContainer.current
+    ) {
+      if (mapRef.current) return;
+
+      mapRef.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [-58.4173, -34.6118], // Default to Buenos Aires
+        zoom: 10,
+      });
+
+      mapRef.current.on("click", (e) => {
+        const { lng, lat } = e.lngLat;
+
+        if (markerRef.current) {
+          markerRef.current.setLngLat([lng, lat]);
+        } else {
+          markerRef.current = new mapboxgl.Marker({ color: "red" })
+            .setLngLat([lng, lat])
+            .addTo(mapRef.current!);
+        }
+
+        setMarkerCoords([lng, lat]);
+        setFormData((prev) => ({
+          ...prev,
+          locationLng: lng,
+          locationLat: lat,
+        }));
+      });
+    }
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+        markerRef.current = null;
+      }
+    };
+  }, [formType]);
 
   function handleInputChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -112,7 +164,6 @@ export default function Home() {
               ← Volver al menú
             </button>
 
-            {/* Common fields */}
             <div>
               <label htmlFor="name" className="block font-medium">
                 Tu Nombre
@@ -127,32 +178,32 @@ export default function Home() {
               />
             </div>
 
-                <div>
-                  <label htmlFor="email" className="block font-medium">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    className="w-full p-2 border rounded"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+            <div>
+              <label htmlFor="email" className="block font-medium">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                className="w-full p-2 border rounded"
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-                <div>
-                  <label htmlFor="telefono" className="block font-medium">
-                    Teléfono
-                  </label>
-                  <input
-                    id="telefono"
-                    name="telefono"
-                    type="tel"
-                    className="w-full p-2 border rounded"
-                    onChange={handleInputChange}
-                  />
-                </div>
+            <div>
+              <label htmlFor="telefono" className="block font-medium">
+                Teléfono
+              </label>
+              <input
+                id="telefono"
+                name="telefono"
+                type="tel"
+                className="w-full p-2 border rounded"
+                onChange={handleInputChange}
+              />
+            </div>
 
             <div>
               <label htmlFor="edad" className="block font-medium">
@@ -231,7 +282,7 @@ export default function Home() {
                   </select>
                 </div>
 
-                     <div>
+                <div>
                   <label htmlFor="largoPelaje" className="block font-medium">
                     Largo del Pelaje
                   </label>
@@ -249,10 +300,9 @@ export default function Home() {
                     <option value="corto">Corto</option>
                     <option value="medio">Medio</option>
                     <option value="largo">Largo</option>
-
                   </select>
                 </div>
-                
+
                 <div>
                   <label htmlFor="peso" className="block font-medium">
                     Peso Aproximado
@@ -265,7 +315,7 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="colorojos" className="block font-medium">
                     Color de Ojos
@@ -278,7 +328,7 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="colorpelo" className="block font-medium">
                     Color del Pelo
@@ -291,7 +341,7 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="castrada" className="block font-medium">
                     ¿Está castrado/a?
@@ -309,28 +359,42 @@ export default function Home() {
                     </option>
                     <option value="Si">Si</option>
                     <option value="No">No</option>
-                    <option value="No sé">No</option>
-
+                    <option value="No sé">No sé</option>
                   </select>
                 </div>
               </>
             )}
 
             {(formType === "findMyPet" || formType === "foundPet") && (
-              <div>
-                <label htmlFor="fecha" className="block font-medium">
-                  {formType === "findMyPet"
-                    ? "Fecha que se perdió"
-                    : "Fecha que se encontró"}
-                </label>
-                <input
-                  id="fecha"
-                  name="fecha"
-                  type="date"
-                  className="w-full p-2 border rounded"
-                  onChange={handleInputChange}
-                />
-              </div>
+              <>
+                <div>
+                  <label htmlFor="fecha" className="block font-medium">
+                    {formType === "findMyPet"
+                      ? "Fecha que se perdió"
+                      : "Fecha que se encontró"}
+                  </label>
+                  <input
+                    id="fecha"
+                    name="fecha"
+                    type="date"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium mb-1">
+                    Selecciona ubicación en el mapa
+                  </label>
+                  <div ref={mapContainer} className="w-full h-64 rounded border" />
+                  {markerCoords && (
+                    <p className="text-sm text-gray-500 mt-2">
+                      Ubicación seleccionada: {markerCoords[1].toFixed(5)},{" "}
+                      {markerCoords[0].toFixed(5)}
+                    </p>
+                  )}
+                </div>
+              </>
             )}
 
             <div>
