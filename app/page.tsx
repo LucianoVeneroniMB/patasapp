@@ -231,6 +231,28 @@ export default function Home() {
                   </select>
                 </div>
 
+                     <div>
+                  <label htmlFor="largoPelaje" className="block font-medium">
+                    Largo del Pelaje
+                  </label>
+                  <select
+                    id="largoPelaje"
+                    name="largoPelaje"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                    defaultValue=""
+                    required
+                  >
+                    <option value="" disabled>
+                      Selecciona una opción
+                    </option>
+                    <option value="corto">Corto</option>
+                    <option value="medio">Medio</option>
+                    <option value="largo">Largo</option>
+
+                  </select>
+                </div>
+                
                 <div>
                   <label htmlFor="peso" className="block font-medium">
                     Peso Aproximado
@@ -243,10 +265,23 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
-
+                
                 <div>
-                  <label htmlFor="color" className="block font-medium">
-                    Color
+                  <label htmlFor="colorojos" className="block font-medium">
+                    Color de Ojos
+                  </label>
+                  <input
+                    id="colorojos"
+                    name="colorojos"
+                    type="text"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="colorpelo" className="block font-medium">
+                    Color del Pelo
                   </label>
                   <input
                     id="color"
