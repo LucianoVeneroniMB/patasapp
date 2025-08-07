@@ -291,6 +291,26 @@ export default function Home() {
                     onChange={handleInputChange}
                   />
                 </div>
+                
+                <div>
+                  <label htmlFor="castrada" className="block font-medium">
+                    ¿Está castrado/a?
+                  </label>
+                  <select
+                    id="castrada"
+                    name="castrada"
+                    className="w-full p-2 border rounded"
+                    onChange={handleInputChange}
+                    defaultValue=""
+                    required
+                  >
+                    <option value="" disabled>
+                      Selecciona una opción
+                    </option>
+                    <option value="Si">Si</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
               </>
             )}
 
