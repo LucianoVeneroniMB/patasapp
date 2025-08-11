@@ -77,12 +77,15 @@ export default function Home() {
     const { lng, lat } = e.lngLat;
   
     if (markerRef.current) {
-      markerRef.current.setLngLat([lng, lat]);
-    } else {
-      markerRef.current = new mapboxgl.Marker({ color: "red" })
-        .setLngLat([lng, lat])
-        .addTo(mapRef.current!);
-    }
+        markerRef.current.setLngLat(lngLatManual);
+      } else {
+        markerRef.current = new mapboxgl.Marker({
+  color: "red",
+  offset: [0, -20], // <-- This moves the marker tip up 20 pixels
+})
+  .setLngLat(lngLatManual)
+  .addTo(mapRef.current!);
+      }
   
     setMarkerCoords([lng, lat]);
     setFormData((prev) => ({
