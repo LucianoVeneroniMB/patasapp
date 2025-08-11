@@ -79,7 +79,7 @@ mapRef.current.on("click", (e) => {
   const clickY = e.originalEvent.clientY;
   const relativeX = clickX - rect.left;
   const relativeY = clickY - rect.top;
-  const lngLatManual = mapRef.current!.unproject([relativeX, relativeY]);
+  const lngLat = e.lngLat;
 
   if (markerRef.current) {
     markerRef.current.setLngLat(lngLatManual);
