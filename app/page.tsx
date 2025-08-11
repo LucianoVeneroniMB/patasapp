@@ -74,31 +74,20 @@ export default function Home() {
 
     // Handle map click to drop or move marker
 mapRef.current.on("click", (e) => {
-  const rect = mapRef.current!.getContainer().getBoundingClientRect();
-  const clickX = e.originalEvent.clientX;
-  const clickY = e.originalEvent.clientY;
-  const relativeX = clickX - rect.left;
-  const relativeY = clickY - rect.top;
-  const lngLat = e.lngLat;
+  const lngLat = e.lngLat; // Use the built-in Mapbox event lngLat directly
 
   if (markerRef.current) {
-    markerRef.current.setLngLat(lngLatManual);
+    markerRef.current.setLngLat(lngLat);
   } else {
     markerRef.current = new mapboxgl.Marker({
       color: "red",
-      offset: [0, -20], // Adjust pixel offset here
+      offset: [0, -20],
     })
       .setLngLat(lngLat)
       .addTo(mapRef.current!);
   }
 
-  // Optional popup for verification:
-  new mapboxgl.Popup()
-    .setLngLat(lngLatManual)
-    .setText(`Lat: ${lngLatManual.lat.toFixed(5)}, Lng: ${lngLatManual.lng.toFixed(5)}`)
-    .addTo(mapRef.current!);
-
-  setMarkerCoords([lngLatManual.lng, lngLatManual.lat]);
+  setMarkerCoords([lngLat.lng, lngLat.lat]);
   setFormData((prev) => ({
     ...prev,
     locationLng: lngLat.lng,
