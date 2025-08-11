@@ -51,6 +51,10 @@ export default function Home() {
       center: defaultCenter,
       zoom: 10,
     });
+    
+    mapRef.current.on("load", () => {
+      mapRef.current?.resize();
+    });
 
     // Try to get user's current position and recenter map
     if (navigator.geolocation) {
