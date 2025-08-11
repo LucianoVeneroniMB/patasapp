@@ -73,27 +73,39 @@ export default function Home() {
     }
 
     // Handle map click to drop or move marker
-     mapRef.current.on("click", (e) => {
-    const { lng, lat } = e.lngLat;
-  
-    if (markerRef.current) {
-        markerRef.current.setLngLat(lngLatManual);
-      } else {
-        markerRef.current = new mapboxgl.Marker({
-  color: "red",
-  offset: [0, -20], // <-- This moves the marker tip up 20 pixels
-})
-  .setLngLat(lngLatManual)
-  .addTo(mapRef.current!);
-      }
-  
-    setMarkerCoords([lng, lat]);
-    setFormData((prev) => ({
-      ...prev,
-      locationLng: lng,
-      locationLat: lat,
-    }));
-  });
+mapRef.current.on("click", (e) => {
+  const rect = mapRef.current!.getContainer().getBoundingClientRect();
+  const clickX = e.originalEvent.clientX;
+  const clickY = e.originalEvent.clientY;
+  const relativeX = clickX - rect.left;
+  const relativeY = clickY - rect.top;
+  const lngLatManual = mapRef.current!.unproject([relativeX, relativeY]);
+
+  if (markerRef.current) {
+    markerRef.current.setLngLat(lngLatManual);
+  } else {
+    markerRef.current = new mapboxgl.Marker({
+      color: "red",
+      offset: [0, -20], // Adjust pixel offset here
+    })
+      .setLngLat(lngLatManual)
+      .addTo(mapRef.current!);
+  }
+
+  // Optional popup for verification:
+  new mapboxgl.Popup()
+    .setLngLat(lngLatManual)
+    .setText(`Lat: ${lngLatManual.lat.toFixed(5)}, Lng: ${lngLatManual.lng.toFixed(5)}`)
+    .addTo(mapRef.current!);
+
+  setMarkerCoords([lngLatManual.lng, lngLatManual.lat]);
+  setFormData((prev) => ({
+    ...prev,
+    locationLng: lngLatManual.lng,
+    locationLat: lngLatManual.lat,
+  }));
+});
+
 
 }
   return () => {
