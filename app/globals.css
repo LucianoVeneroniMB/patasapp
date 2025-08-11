@@ -26,10 +26,12 @@ body {
 }
 
 .map-container {
-  position: relative;
-  width: 100%;
-  height: 16rem; /* same as Tailwind h-64 */
-  padding: 0;
-  margin: 0;
-  border: none;
+  border: 1px solid red !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 16rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  zoom: 1 !important;
 }
