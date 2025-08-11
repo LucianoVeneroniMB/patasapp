@@ -97,7 +97,7 @@ export default function Home() {
       }));
     });
 
-
+}
   return () => {
     if (mapRef.current) {
       mapRef.current.remove();
