@@ -88,7 +88,7 @@ mapRef.current.on("click", (e) => {
       color: "red",
       offset: [0, -20], // Adjust pixel offset here
     })
-      .setLngLat(lngLatManual)
+      .setLngLat(lngLat)
       .addTo(mapRef.current!);
   }
 
@@ -101,8 +101,8 @@ mapRef.current.on("click", (e) => {
   setMarkerCoords([lngLatManual.lng, lngLatManual.lat]);
   setFormData((prev) => ({
     ...prev,
-    locationLng: lngLatManual.lng,
-    locationLat: lngLatManual.lat,
+    locationLng: lngLat.lng,
+    locationLat: lngLat.lat,
   }));
 });
 
